@@ -1,4 +1,4 @@
-import { Room as BaseRoom } from '../../shared/types';
+import type { Room as BaseRoom } from '../../shared/types';
 
 export interface GuessTheImposterGame {
   type: 'guess-the-imposter';
@@ -29,7 +29,4 @@ export interface GuessTheImposterGameConfig {
 
 export type GuessTheImposterRoom = BaseRoom<GuessTheImposterGame>;
 
-// Legacy exports for backward compatibility
-export type Game = GuessTheImposterGame;
-export type GameResults = GuessTheImposterResults;
-export type Room = GuessTheImposterRoom;
+// Note: Legacy exports are handled in the main types.ts file to avoid conflicts

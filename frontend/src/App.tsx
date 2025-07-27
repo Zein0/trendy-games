@@ -112,7 +112,7 @@ function App() {
       }
     });
 
-    socket.on('game-restarted', (game: Game) => {
+    socket.on('game-restarted', (game: GuessTheImposterGame) => {
       if (room) {
         setRoom({
           ...room,
