@@ -19,7 +19,9 @@
       "Bash(npx tsc:*)",
       "Bash(cp:*)",
       "Bash(chmod:*)",
-      "Bash(timeout 10s npm start)"
+      "Bash(timeout 10s npm start)",
+      "Bash(npm run lint)",
+      "Bash(npm run:*)"
     ],
     "deny": []
   }

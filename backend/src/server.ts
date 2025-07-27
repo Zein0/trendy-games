@@ -10,6 +10,13 @@ dotenv.config();
 
 const app = express();
 const server = createServer(app);
+
+// Log environment variables on startup
+console.log('🚀 Server starting with environment:');
+console.log('   NODE_ENV:', process.env.NODE_ENV);
+console.log('   CLIENT_URL:', process.env.CLIENT_URL);
+console.log('   PORT:', process.env.PORT);
+
 // Helper function to normalize URLs and handle multiple origins
 const getAllowedOrigins = () => {
   if (process.env.NODE_ENV === 'production') {

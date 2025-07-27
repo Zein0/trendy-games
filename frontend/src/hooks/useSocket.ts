@@ -10,9 +10,13 @@ export const useSocket = (serverUrl: string = import.meta.env.VITE_BACKEND_URL |
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
+    console.log('🔌 Attempting to connect to:', serverUrl);
+    console.log('🌐 VITE_BACKEND_URL:', import.meta.env.VITE_BACKEND_URL);
+    
     if (!socketRef.current) {
       socketRef.current = io(serverUrl, {
         autoConnect: true,
+        transports: ['polling', 'websocket'], // Explicit transport order
       });
 
       socketRef.current.on('connect', () => {
