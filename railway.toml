@@ -10,3 +10,4 @@
 
 [[services]]
   name = "trendy-games-backend"
+  internalPort = 3000
