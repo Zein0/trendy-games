@@ -1,0 +1,5 @@
+/* Additional styles for app-specific components */
+.container {
+  width: 100%;
+  max-width: 1200px;
+}
