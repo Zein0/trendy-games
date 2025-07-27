@@ -23,7 +23,7 @@ const io = new Server<ClientToServerEvents, ServerToClientEvents>(server, {
   cors: {
     origin: "*",
     methods: ["GET", "POST"],
-  },
+  }
 });
 
 // Add comprehensive CORS debugging
@@ -41,7 +41,6 @@ app.use((req, _res, next) => {
 
 app.use(cors({
   origin: "*",
-  credentials: true
 }));
 app.use(express.json());
 
