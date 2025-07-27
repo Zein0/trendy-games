@@ -17,24 +17,7 @@ console.log('   NODE_ENV:', process.env.NODE_ENV);
 console.log('   CLIENT_URL:', process.env.CLIENT_URL);
 console.log('   PORT:', process.env.PORT);
 
-// Helper function to normalize URLs and handle multiple origins
-const getAllowedOrigins = () => {
-  if (process.env.NODE_ENV === 'production') {
-    const clientUrl = process.env.CLIENT_URL;
-    if (clientUrl) {
-      // Remove trailing slash and create variations
-      const baseUrl = clientUrl.replace(/\/$/, '');
-      const origins = [baseUrl, `${baseUrl}/`];
-      console.log('🌐 Production CORS origins:', origins);
-      return origins;
-    }
-    console.log('⚠️  No CLIENT_URL found in production environment');
-    return [];
-  }
-  const devOrigins = ["http://localhost:5173", "http://127.0.0.1:5173"];
-  console.log('🔧 Development CORS origins:', devOrigins);
-  return devOrigins;
-};
+// CORS configured to allow all origins for now
 
 const io = new Server<ClientToServerEvents, ServerToClientEvents>(server, {
   cors: {
@@ -44,12 +27,16 @@ const io = new Server<ClientToServerEvents, ServerToClientEvents>(server, {
   }
 });
 
-// Add logging middleware for CORS debugging
-app.use((req, res, next) => {
+// Add comprehensive CORS debugging
+app.use((req, _res, next) => {
   const origin = req.headers.origin;
-  if (origin) {
-    console.log(`📡 Request from origin: ${origin}`);
-  }
+  console.log(`📡 Incoming request:`, {
+    method: req.method,
+    url: req.url,
+    origin: origin,
+    userAgent: req.headers['user-agent']?.substring(0, 50) + '...',
+    referer: req.headers.referer
+  });
   next();
 });
 
@@ -61,7 +48,7 @@ app.use(express.json());
 
 const gameManager = new GameManager();
 
-app.get('/health', (req, res) => {
+app.get('/health', (_req, res) => {
   res.json({ status: 'OK' });
 });
 
