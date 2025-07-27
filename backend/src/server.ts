@@ -38,7 +38,7 @@ const getAllowedOrigins = () => {
 
 const io = new Server<ClientToServerEvents, ServerToClientEvents>(server, {
   cors: {
-    origin: getAllowedOrigins(),
+    origin: "*",
     methods: ["GET", "POST"],
     credentials: true
   }
@@ -54,7 +54,7 @@ app.use((req, res, next) => {
 });
 
 app.use(cors({
-  origin: getAllowedOrigins(),
+  origin: "*",
   credentials: true
 }));
 app.use(express.json());
