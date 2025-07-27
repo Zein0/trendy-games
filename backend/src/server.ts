@@ -10,20 +10,44 @@ dotenv.config();
 
 const app = express();
 const server = createServer(app);
+// Helper function to normalize URLs and handle multiple origins
+const getAllowedOrigins = () => {
+  if (process.env.NODE_ENV === 'production') {
+    const clientUrl = process.env.CLIENT_URL;
+    if (clientUrl) {
+      // Remove trailing slash and create variations
+      const baseUrl = clientUrl.replace(/\/$/, '');
+      const origins = [baseUrl, `${baseUrl}/`];
+      console.log('🌐 Production CORS origins:', origins);
+      return origins;
+    }
+    console.log('⚠️  No CLIENT_URL found in production environment');
+    return [];
+  }
+  const devOrigins = ["http://localhost:5173", "http://127.0.0.1:5173"];
+  console.log('🔧 Development CORS origins:', devOrigins);
+  return devOrigins;
+};
+
 const io = new Server<ClientToServerEvents, ServerToClientEvents>(server, {
   cors: {
-    origin: process.env.NODE_ENV === 'production' 
-      ? process.env.CLIENT_URL 
-      : ["http://localhost:5173", "http://127.0.0.1:5173"],
+    origin: getAllowedOrigins(),
     methods: ["GET", "POST"],
     credentials: true
   }
 });
 
+// Add logging middleware for CORS debugging
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin) {
+    console.log(`📡 Request from origin: ${origin}`);
+  }
+  next();
+});
+
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? process.env.CLIENT_URL 
-    : ["http://localhost:5173", "http://127.0.0.1:5173"],
+  origin: getAllowedOrigins(),
   credentials: true
 }));
 app.use(express.json());
